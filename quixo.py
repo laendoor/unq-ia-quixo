@@ -9,11 +9,13 @@ class InvalidMove(RuntimeError):
         self.args = arg
 
 
-# 01 02 03 04 05
-# 16 __ __ __ 06
-# 15 __ __ __ 07
-# 14 __ __ __ 08
-# 13 12 11 10 09
+#       0  1  2  3  4
+#   ++ == == == == ==
+# 0 ||  1  2  3  4  5
+# 1 || 16 __ __ __  6
+# 2 || 15 __ __ __  7
+# 3 || 14 __ __ __  8
+# 4 || 13 12 11 10  9
 def map_move(move_number):
     moves = {
         1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (0, 3), 5: (0, 4),
@@ -27,103 +29,83 @@ def map_move(move_number):
     return moves[move_number]
 
 
-# QuixoMove = namedtuple('QuixoMove', ['space', 'player', 'roll'])
-#
-# boundary_indexes = np.array([(0, i) for i in range(5)] +
-#                             [(4, i) for i in range(5)] +
-#                             [(i, 0) for i in range(1, 4)] +
-#                             [(i, 4) for i in range(1, 4)])
-#
-# boundary_xs, boundary_ys = boundary_indexes.T
-#
-#
-# def roll_x(position, direction):
-#     def roll(board):
-#         board[position] = np.roll(board[position], shift=1)
-#     return roll
-#
-#
-# def roll_y(position, direction):
-#     def roll(board):
-#         board[:, position] = np.roll(board[:, position], shift=1)
-#     return roll
+def valid_reinsertion_directions(taken_move):
+    directions = {
+        (0, 0): ['',  "S", "E",  ""],
+        (0, 1): ['',  "S", "E", "W"],
+        (0, 2): ['',  "S", "E", "W"],
+        (0, 3): ['',  "S", "E", "W"],
+        (0, 4): ['',  "S",  '', "W"],
+        (1, 0): ["N", "S", "E",  ''],
+        (1, 4): ["N", "S",  '', "W"],
+        (2, 0): ["N", "S", "E",  ''],
+        (2, 4): ["N", "S",  '', "W"],
+        (3, 0): ["N", "S", "E",  ''],
+        (3, 4): ["N", "S",  '', "W"],
+        (4, 0): ["N",  '', "E",  ''],
+        (4, 1): ["N",  '', "E", "W"],
+        (4, 2): ["N",  '', "E", "W"],
+        (4, 3): ["N",  '', "E", "W"],
+        (4, 4): ["N",  '',  '', "W"],
+    }
+    return list(filter(None, directions[taken_move]))
 
 
-# end unnecessary to compute every time
+# Rotate coordinates 90° anticlockwise
+def reinsert_from_rot90(reinsert_from):
+    map_directions = {"N": "W", "W": "S", "S": "E", "E": "N"}
+    return map_directions[reinsert_from]
+
+
 class QuixoGame(object):
-
-    # State = namedtuple('QuixoState', ['board', 'current_player', 'winner'])
 
     def __init__(self, initial_player=1):
         self.board = np.zeros((5, 5), dtype=np.int)
         self.current_player = initial_player
         self.winner = None
 
-    def make_move(self, take_move, put_move, reinsert_from):
+    def make_move(self, take_move, reinsert_from):
         take_move = map_move(take_move)
-        put_move = map_move(put_move)
+        self._assert_valid_move(take_move, reinsert_from)
 
-        # Moving validations
-        if self.board[take_move] == (self.current_player * -1):
-            raise InvalidMove("No podés sacar las fichas de tu oponente")
-        if reinsert_from not in valids_reinsert_directions(take_move):
-            raise InvalidMove("No podés reinsertar la ficha por ese lugar")
-
-        # Si saqué de la fila 1 o de la fila 5 (casilleros: 1, 2, 3, 4, 5, 13, 12, 11, 10, 9)
+        # Si saqué de la fila 1 o de la fila 5 (casilleros: 1, 2, 3, 4, 5, 9, 10, 11, 12, 13)
         if take_move[0] in [0, 4]:
-            # Y quiero reinsertar desde el Norte o el Sur
-            # Shifteo la columna
-            if reinsert_from in ["S", "N"]:
-                shift = 1 if reinsert_from == "S" else -1
-                self.board[take_move] = self.current_player
-                self.board[:, take_move[1]] = np.roll(self.board[:, take_move[1]], shift=shift)
-            # Y quiero reinsertar desde Oeste o Este
-            # Separa la fila en dos (sin incluir la sacada) y la reinserto desde atrás o adelante
-            if reinsert_from in ["W", "E"]:
-                left = self.board[take_move[0]][:take_move[0]]
-                right = self.board[take_move[0]][take_move[0]:]
-                new_line = left + right
-                if reinsert_from == "W":
-                    new_line = [self.current_player] + new_line
-                else:
-                    new_line = new_line + [self.current_player]
-                self.board[take_move[0]] = new_line
-        # Creo que se podría mejorar, pero es básicamente la idea...
-        # TODO hacer lo mismo para las columnas
-        # Algo que se podría hacer es transponer la matriz np.rot90(self.board)
-        # y usar lo mismo que arriba, pero teniendo cuidado con los reinsert_from
+            self._reinsert(take_move, reinsert_from)
 
-
-
-
-        # new_board = deepcopy(state.board)
-        # self.board[move.space[0], move.space[1]] = move.player
-        # move.roll(self.board)
-
+        # Si saqué de la columna 1 o de la columna 5 (casilleros: 6, 7, 8, 14, 15, 16)
+        if take_move[0] in [1, 2, 3]:
+            np.rot90(self.board, 1)     # Rotate 90° anticlockwise
+            self._reinsert(take_move, reinsert_from_rot90(reinsert_from))
+            np.rot90(self.board, -1)    # Rotate 90° counterclockwise (rollback to original position)
 
         self.current_player *= -1
         self.winner = self.determine_winner() if self.check_for_winner() else None
 
-    # def get_moves(self):
-    #     blocks = np.where(
-    #         np.logical_or(
-    #             self.board[boundary_xs, boundary_ys] == 0,
-    #             self.board[boundary_xs, boundary_ys] == self.current_player
-    #         )
-    #     )[0]
-    #
-    #     bxs = boundary_xs[blocks]
-    #     bys = boundary_ys[blocks]
-    #
-    #     moves = list()
-    #     for bx, by in zip(bxs, bys):
-    #         moves.extend([
-    #             QuixoMove((bx, by), self.current_player, roll_x(bx, 1)),
-    #             QuixoMove((bx, by), self.current_player, roll_x(bx, -1)),
-    #             QuixoMove((bx, by), self.current_player, roll_y(by, 1)),
-    #             QuixoMove((bx, by), self.current_player, roll_y(by, -1))
-    #         ])
-    #     return False, moves
+    def _reinsert(self, take_move, reinsert_from):
+        # Y quiero reinsertar desde el Norte o el Sur
+        # Shifteo la columna
+        if reinsert_from in ["S", "N"]:
+            shift = 1 if reinsert_from == "S" else -1
+            self.board[take_move] = self.current_player
+            self.board[:, take_move[1]] = np.roll(self.board[:, take_move[1]], shift=shift)
+        # Y quiero reinsertar desde Oeste o Este
+        # Separa la fila en dos (sin incluir la sacada) y la reinserto desde atrás o adelante
+        if reinsert_from in ["W", "E"]:
+            left = self.board[take_move[0]][:take_move[0]]
+            right = self.board[take_move[0]][take_move[0]:]
+            new_line = left + right
+            if reinsert_from == "W":
+                new_line = [self.current_player] + new_line
+            else:
+                new_line = new_line + [self.current_player]
+            self.board[take_move[0]] = new_line
+
+    def _assert_valid_move(self, taken_move, reinsert_from):
+        # Moving validations
+        if self.board[taken_move] == (self.current_player * -1):
+            raise InvalidMove("No podés sacar las fichas de tu oponente")
+        if reinsert_from not in valid_reinsertion_directions(taken_move):
+            raise InvalidMove("No podés reinsertar la ficha por ese lugar")
 
     def check_for_winner(self):
         return any(abs(np.sum(self.board, axis=0)) == 5) or\

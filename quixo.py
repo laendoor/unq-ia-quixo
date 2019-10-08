@@ -5,8 +5,8 @@ from mittmcts import Draw
 
 
 class InvalidMove(RuntimeError):
-    def __init__(self, arg):
-        self.args = arg
+    def __init__(self, message):
+        self.message = str(message)
 
 
 #       0  1  2  3  4
@@ -145,10 +145,36 @@ class QuixoGame(object):
     def current_player(self):
         return self.current_player
 
+    #        1  2  3  4  5
+    #    ++ == == == == == ++
+    #    || __ __ __ __ __ ||
+    # 16 || __ __ __ __ __ || 6
+    # 15 || __ __ __ __ __ || 7
+    # 14 || __ __ __ __ __ || 8
+    # 13 || __ __ __ __ __ || 9
+    #    ++ == == == == == ++
+    #          12 11 10
     def print_board(self):
-        char_map = np.array([' ', 'o', 'x'])
-        print(' ' + ' '.join(map(str, np.arange(5))) +
-              '\n' + '_' * (5 * 2 + 2))
-        for num_row, row in enumerate(self.board):
-            print(str(num_row) + '|' + '|'.join(char_map[row]) + '|')
-        print('_' * (5 * 2 + 2))
+        l1 = ' '.join(map(self.print_position, self.board[0]))
+        l2 = ' '.join(map(self.print_position, self.board[1]))
+        l3 = ' '.join(map(self.print_position, self.board[2]))
+        l4 = ' '.join(map(self.print_position, self.board[3]))
+        l5 = ' '.join(map(self.print_position, self.board[4]))
+        print("        1  2  3  4  5")
+        print("    ++ == == == == == ++")
+        print(f"    || { l1 } ||  ")
+        print(f" 16 || { l2 } || 6")
+        print(f" 15 || { l3 } || 7")
+        print(f" 14 || { l4 } || 8")
+        print(f"    || { l5 } ||  ")
+        print("    ++ == == == == == ++")
+        print("           12 11 10   ")
+
+    @staticmethod
+    def print_position(player):
+        if player == 1:
+            return ' o'
+        elif player == -1:
+            return ' x'
+        else:
+            return '  '

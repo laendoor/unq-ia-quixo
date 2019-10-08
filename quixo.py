@@ -20,7 +20,7 @@ def map_move(move_number):
     moves = {
         1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (0, 3), 5: (0, 4),
         6: (1, 4), 7: (2, 4), 8: (3, 4),
-        9: (4, 4), 10: (4, 3), 11: (4, 2), 12: (4, 1), 13: (4, 1),
+        9: (4, 4), 10: (4, 3), 11: (4, 2), 12: (4, 1), 13: (4, 0),
         14: (3, 0), 15: (2, 0), 16: (1, 0),
     }
     if move_number not in moves:
@@ -65,6 +65,7 @@ class QuixoGame(object):
         self.winner = None
 
     def make_move(self, take_move, reinsert_from):
+        reinsert_from = reinsert_from.upper()
         take_move = map_move(take_move)
         self._assert_valid_move(take_move, reinsert_from)
 
@@ -85,19 +86,19 @@ class QuixoGame(object):
         # Y quiero reinsertar desde el Norte o el Sur
         # Shifteo la columna
         if reinsert_from in ["S", "N"]:
-            shift = 1 if reinsert_from == "S" else -1
+            shift = -1 if reinsert_from == "S" else 1
             self.board[take_move] = self.current_player
             self.board[:, take_move[1]] = np.roll(self.board[:, take_move[1]], shift=shift)
         # Y quiero reinsertar desde Oeste o Este
         # Separa la fila en dos (sin incluir la sacada) y la reinserto desde atrás o adelante
         if reinsert_from in ["W", "E"]:
-            left = self.board[take_move[0]][:take_move[0]]
-            right = self.board[take_move[0]][take_move[0]:]
-            new_line = left + right
+            left = self.board[take_move[0]][:take_move[1]]
+            right = self.board[take_move[0]][take_move[1]+1:]
+            new_line = np.concatenate((left, right))
             if reinsert_from == "W":
-                new_line = [self.current_player] + new_line
+                new_line = np.concatenate(([self.current_player], new_line))
             else:
-                new_line = new_line + [self.current_player]
+                new_line = np.concatenate((new_line, [self.current_player]))
             self.board[take_move[0]] = new_line
 
     def _assert_valid_move(self, taken_move, reinsert_from):
@@ -166,9 +167,9 @@ class QuixoGame(object):
         print(f" 16 || { l2 } || 6")
         print(f" 15 || { l3 } || 7")
         print(f" 14 || { l4 } || 8")
-        print(f"    || { l5 } ||  ")
+        print(f" 13 || { l5 } || 9")
         print("    ++ == == == == == ++")
-        print("           12 11 10   ")
+        print("          12 11 10   ")
 
     @staticmethod
     def print_position(player):

@@ -1,7 +1,4 @@
 import numpy as np
-# from collections import namedtuple
-# from copy import deepcopy
-from mittmcts import Draw
 
 
 class InvalidMove(RuntimeError):

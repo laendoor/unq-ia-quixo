@@ -1,3 +1,5 @@
+from numpy import array_equal
+
 from quixo import map_move, InvalidMove, valid_reinsertion_directions, reinsert_from_rot90
 from quixo import *
 import pytest
@@ -73,3 +75,31 @@ def test_board_rotation():
         for j in range(0, 4):
             assert original_board_rotated[i][j] == rotated_board[i][j]
             assert rotated_board_rotated[i][j] == original_board[i][j]
+
+
+def assert_array_equal(arr1, arr2):
+    for i in range(0, 5):
+        for j in range(0, 5):
+            assert arr1[i][j] == arr2[i][j]
+
+
+def test_board_insertions():
+    game = QuixoGame(1)
+    expected_board = [[0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0],
+                      [1, 0, 0, 0, 0]]
+    game.make_move(1, 'S')
+    game_board = game.board.tolist()
+    assert_array_equal(game_board, expected_board)
+
+    game = QuixoGame(1)
+    expected_board = [[0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0],
+                      [0, 0, 0, -1, 1],
+                      [1, 0, 0, -1, 1]]
+    game.make_move(1, 'S')
+    game_board = game.board.tolist()
+    assert_array_equal(game_board, expected_board)

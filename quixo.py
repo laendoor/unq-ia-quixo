@@ -54,6 +54,19 @@ def reinsert_from_rot90(reinsert_from):
     return map_directions[reinsert_from]
 
 
+def map_rot90_take_move(take_move):
+    moves = {
+        (1, 0): (4, 1),
+        (2, 0): (4, 2),
+        (3, 0): (4, 3),
+        (1, 4): (0, 1),
+        (2, 4): (0, 2),
+        (3, 4): (0, 3),
+    }
+    tuple = (take_move[0], take_move[1])
+    return moves[tuple]
+
+
 class QuixoGame(object):
 
     def __init__(self, initial_player=1):
@@ -66,15 +79,15 @@ class QuixoGame(object):
         take_move = map_move(take_move)
         self._assert_valid_move(take_move, reinsert_from)
 
-        # Si saqué de la fila 1 o de la fila 5 (casilleros: 1, 2, 3, 4, 5, 9, 10, 11, 12, 13)
+        # Si tome 1, 2, 3, 4, 5, 9, 10, 11, 12 o 13:
         if take_move[0] in [0, 4]:
             self._reinsert(take_move, reinsert_from)
 
-        # Si saqué de la columna 1 o de la columna 5 (casilleros: 6, 7, 8, 14, 15, 16)
+        # Si tome: 6, 7, 8, 14, 15 o 16
         if take_move[0] in [1, 2, 3]:
-            np.rot90(self.board, 1)     # Rotate 90° anticlockwise
-            self._reinsert(take_move, reinsert_from_rot90(reinsert_from))
-            np.rot90(self.board, -1)    # Rotate 90° counterclockwise (rollback to original position)
+            self.board = np.rot90(self.board, 1)  # Rotate 90° anticlockwise
+            self._reinsert(map_rot90_take_move(take_move), reinsert_from_rot90(reinsert_from))
+            self.board = np.rot90(self.board, -1)  # Rotate 90° counterclockwise (rollback to original position)
 
         self.current_player *= -1
         self.winner = self.determine_winner() if self.check_for_winner() else None

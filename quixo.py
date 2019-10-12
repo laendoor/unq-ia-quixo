@@ -147,7 +147,7 @@ class QuixoGame(object):
             return 'Draw'
         else:
             winner = winning_players.pop()
-            winner_map = [Draw, 'o', 'x']
+            winner_map = ['Draw', 'o', 'x']
             return winner_map[winner]
     
     def get_winner(self):

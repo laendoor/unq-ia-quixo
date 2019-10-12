@@ -15,8 +15,7 @@ if __name__ == '__main__':
         except InvalidMove as e:
             print(e.message)
             continue
-        winner = game.check_for_winner()
-        if winner:
+        if game.get_winner():
             game.print_board()
             print(f'Ganó {game.get_winner()}')
             break

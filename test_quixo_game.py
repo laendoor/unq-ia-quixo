@@ -647,3 +647,51 @@ def test_initial_advanced_move():
                       [0, 0, 0, -1, 1],
                       [0, 0, 0, -1, 1]]
     assert_array_equal(played_board, expected_board)
+
+
+def test_player_wins_with_5_in_a_column():
+    initial_board = [[0, 0, 0, 0, 0],
+                     [1, 0, 0, 0, 0],
+                     [1, 0, 0, 0, 0],
+                     [1, 0, 0, 0, 0],
+                     [1, 0, 0, 0, 0]]
+    game = QuixoGame(1)
+    game.board = np.array(initial_board)
+    game.make_move(1, 'S')
+    assert game.get_winner() == "o"
+
+
+def test_player_wins_with_5_in_a_row():
+    initial_board = [[0, 0, 0, 0, 0],
+                     [-1, -1, -1, -1, 0],
+                     [0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0]]
+    game = QuixoGame(-1)
+    game.board = np.array(initial_board)
+    game.make_move(6, 'W')
+    assert game.get_winner() == "x"
+
+
+def test_player_wins_with_5_in_a_diagonal():
+    initial_board = [[0, 0, 0, 0, 0],
+                     [0, 0, 0, 1, 0],
+                     [0, 0, 1, 0, 0],
+                     [0, 1, 0, 0, 0],
+                     [1, 0, 0, 0, 0]]
+    game = QuixoGame(1)
+    game.board = np.array(initial_board)
+    game.make_move(9, 'N')
+    assert game.get_winner() == "o"
+
+
+def test_it_could_end_up_in_a_draw():
+    initial_board = [[-1, 0, 0, 0, 0],
+                     [1, -1, 0, 0, 0],
+                     [1, -1, 0, 0, 0],
+                     [1, -1, 0, 0, 0],
+                     [1, -1, 0, 0, 0]]
+    game = QuixoGame(1)
+    game.board = np.array(initial_board)
+    game.make_move(5, 'W')
+    assert game.get_winner() == "Draw"

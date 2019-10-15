@@ -122,6 +122,22 @@ class QuixoGame(object):
         self.current_player = initial_player
         self.winner = None
 
+    def valid_moves(self):
+        valid_moves = []
+        directions = ['N', 'S', 'W', 'E']
+        for token in range(1, 17):
+            take_move = map_move(token)
+            row, column = take_move
+            if self.board[row][column] == self.current_player * -1:
+                continue
+            for direction in directions:
+                try:
+                    self._assert_valid_move(take_move, direction)
+                    valid_moves.append((token, direction))
+                except:
+                    pass
+        return valid_moves
+
     def make_move(self, take_move, reinsert_from):
         reinsert_from = map_reinsert(take_move, reinsert_from);
         reinsert_from = reinsert_from.upper()

@@ -138,6 +138,9 @@ class QuixoGame(object):
                     pass
         return valid_moves
 
+    def get_value_of(self, move):
+        return 1
+
     def make_move(self, take_move, reinsert_from):
         reinsert_from = map_reinsert(take_move, reinsert_from)
         reinsert_from = reinsert_from.upper()

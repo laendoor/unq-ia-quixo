@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from random import choice
 from copy import deepcopy
 from quixo import QuixoGame
 
@@ -30,7 +31,13 @@ class Quixo(object):
 
     @staticmethod
     def h(game):
-        return None  # FIXME
+        best_move = -inf
+        return choice(game.valid_moves())
+        # for move in game.valid_moves():
+        #     this_move = game.get_value_of(move)
+        #     if this_move > best_move:
+        #         best_move = this_move
+        # return best_move
 
     @staticmethod
     def valid_moves(game):

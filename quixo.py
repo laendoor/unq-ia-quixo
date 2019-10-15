@@ -77,10 +77,10 @@ def map_reinsert(take, reinsert):
         (6, 5): "N", (6, 9): "S", (6, 16): "W",
         (7, 5): "N", (7, 9): "S", (7, 15): "W",
         (8, 5): "N", (8, 9): "S", (8, 14): "W",
-        (9, 5): "N", (5, 13): "W",
+        (9, 5): "N", (9, 13): "W",
         (10, 9): "E", (10, 13): "W", (10, 4): "N",
         (11, 9): "E", (11, 13): "W", (11, 3): "N",
-        (12, 9): "E", (12, 13): "W", (12, 3): "N",
+        (12, 9): "E", (12, 13): "W", (12, 2): "N",
         (13, 1): "N", (13, 9): "E",
         (14, 1): "N", (14, 13): "S", (14, 8): "E",
         (15, 1): "N", (15, 13): "S", (15, 7): "E",
@@ -101,10 +101,10 @@ def map_reinsert_reverse(take, reinsert_coord):
         (6, "N"): 5, (6, "S"): 9, (6, "W"): 16,
         (7, "N"): 5, (7, "S"): 9, (7, "W"): 15,
         (8, "N"): 5, (8, "S"): 9, (8, "W"): 14,
-        (9, "N"): 5, (5, "W"): 13,
+        (9, "N"): 5, (9, "W"): 13,
         (10, "E"): 9, (10, "W"): 13, (10, "N"): 4,
         (11, "E"): 9, (11, "W"): 13, (11, "N"): 3,
-        (12, "E"): 9, (12, "W"): 13, (12, "N"): 3,
+        (12, "E"): 9, (12, "W"): 13, (12, "N"): 2,
         (13, "N"): 1, (13, "E"): 9,
         (14, "N"): 1, (14, "S"): 13, (14, "E"): 8,
         (15, "N"): 1, (15, "S"): 13, (15, "E"): 7,
@@ -133,8 +133,8 @@ class QuixoGame(object):
             for direction in directions:
                 try:
                     self._assert_valid_move(take_move, direction)
-                    valid_moves.append((token, direction))
-                except:
+                    valid_moves.append(map_reinsert_reverse(token, direction))
+                except InvalidMove:
                     pass
         return valid_moves
 

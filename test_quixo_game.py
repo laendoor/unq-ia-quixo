@@ -94,7 +94,7 @@ def board_after_playing(player, token, direction, board=None):
 
 
 def test_initial_board_insertion_1_S():
-    played_board = board_after_playing(1, 1, 'S')
+    played_board = board_after_playing(1, 1, 13)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -105,11 +105,11 @@ def test_initial_board_insertion_1_S():
 
 def test_initial_board_insertion_1_N():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 1, 'N')
+        board_after_playing(1, 1, 1)
 
 
 def test_initial_board_insertion_1_E():
-    played_board = board_after_playing(1, 1, 'E')
+    played_board = board_after_playing(1, 1, 5)
     expected_board = [[0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -120,12 +120,11 @@ def test_initial_board_insertion_1_E():
 
 def test_initial_board_insertion_1_W():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 1, 'W')
+        board_after_playing(1, 1, 1)
 
 
 def test_initial_board_insertion_2_S():
-    played_board = board_after_playing(1, 2, 'S')
-
+    played_board = board_after_playing(1, 2, 12)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -136,11 +135,11 @@ def test_initial_board_insertion_2_S():
 
 def test_initial_board_insertion_2_N():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 2, 'N')
+        board_after_playing(1, 2, 2)
 
 
 def test_initial_board_insertion_2_E():
-    played_board = board_after_playing(1, 2, 'E')
+    played_board = board_after_playing(1, 2, 5)
     expected_board = [[0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -150,7 +149,7 @@ def test_initial_board_insertion_2_E():
 
 
 def test_initial_board_insertion_2_W():
-    played_board = board_after_playing(1, 2, 'W')
+    played_board = board_after_playing(1, 2, 1)
     expected_board = [[1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -160,7 +159,7 @@ def test_initial_board_insertion_2_W():
 
 
 def test_initial_board_insertion_3_S():
-    played_board = board_after_playing(1, 3, 'S')
+    played_board = board_after_playing(1, 3, 11)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -171,11 +170,11 @@ def test_initial_board_insertion_3_S():
 
 def test_initial_board_insertion_3_N():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 3, 'N')
+        board_after_playing(1, 3, 3)
 
 
 def test_initial_board_insertion_3_E():
-    played_board = board_after_playing(1, 3, 'E')
+    played_board = board_after_playing(1, 3, 5)
     expected_board = [[0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -185,7 +184,7 @@ def test_initial_board_insertion_3_E():
 
 
 def test_initial_board_insertion_3_W():
-    played_board = board_after_playing(1, 3, 'W')
+    played_board = board_after_playing(1, 3, 1)
     expected_board = [[1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -195,7 +194,7 @@ def test_initial_board_insertion_3_W():
 
 
 def test_initial_board_insertion_4_S():
-    played_board = board_after_playing(1, 4, 'S')
+    played_board = board_after_playing(1, 4, 10)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -206,11 +205,11 @@ def test_initial_board_insertion_4_S():
 
 def test_initial_board_insertion_4_N():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 4, 'N')
+        board_after_playing(1, 4, 4)
 
 
 def test_initial_board_insertion_4_E():
-    played_board = board_after_playing(1, 4, 'E')
+    played_board = board_after_playing(1, 4, 5)
     expected_board = [[0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -220,7 +219,7 @@ def test_initial_board_insertion_4_E():
 
 
 def test_initial_board_insertion_4_W():
-    played_board = board_after_playing(1, 4, 'W')
+    played_board = board_after_playing(1, 4, 1)
     expected_board = [[1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -230,7 +229,7 @@ def test_initial_board_insertion_4_W():
 
 
 def test_initial_board_insertion_5_S():
-    played_board = board_after_playing(1, 5, 'S')
+    played_board = board_after_playing(1, 5, 9)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -241,16 +240,16 @@ def test_initial_board_insertion_5_S():
 
 def test_initial_board_insertion_5_N():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 5, 'N')
+        board_after_playing(1, 5, 5)
 
 
 def test_initial_board_insertion_5_E():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 5, 'E')
+        board_after_playing(1, 5, 5)
 
 
 def test_initial_board_insertion_5_W():
-    played_board = board_after_playing(1, 5, 'W')
+    played_board = board_after_playing(1, 5, 1)
     expected_board = [[1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -260,7 +259,7 @@ def test_initial_board_insertion_5_W():
 
 
 def test_initial_board_insertion_6_S():
-    played_board = board_after_playing(1, 6, 'S')
+    played_board = board_after_playing(1, 6, 9)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -270,7 +269,7 @@ def test_initial_board_insertion_6_S():
 
 
 def test_initial_board_insertion_6_N():
-    played_board = board_after_playing(1, 6, 'N')
+    played_board = board_after_playing(1, 6, 5)
     expected_board = [[0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -281,11 +280,11 @@ def test_initial_board_insertion_6_N():
 
 def test_initial_board_insertion_6_E():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 6, 'E')
+        board_after_playing(1, 6, 6)
 
 
 def test_initial_board_insertion_6_W():
-    played_board = board_after_playing(1, 6, 'W')
+    played_board = board_after_playing(1, 6, 16)
     expected_board = [[0, 0, 0, 0, 0],
                       [1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -295,7 +294,7 @@ def test_initial_board_insertion_6_W():
 
 
 def test_initial_board_insertion_7_S():
-    played_board = board_after_playing(1, 7, 'S')
+    played_board = board_after_playing(1, 7, 9)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -305,7 +304,7 @@ def test_initial_board_insertion_7_S():
 
 
 def test_initial_board_insertion_7_N():
-    played_board = board_after_playing(1, 7, 'N')
+    played_board = board_after_playing(1, 7, 5)
     expected_board = [[0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -316,11 +315,11 @@ def test_initial_board_insertion_7_N():
 
 def test_initial_board_insertion_7_E():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 7, 'E')
+        board_after_playing(1, 7, 7)
 
 
 def test_initial_board_insertion_7_W():
-    played_board = board_after_playing(1, 7, 'W')
+    played_board = board_after_playing(1, 7, 15)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [1, 0, 0, 0, 0],
@@ -330,7 +329,7 @@ def test_initial_board_insertion_7_W():
 
 
 def test_initial_board_insertion_8_S():
-    played_board = board_after_playing(1, 8, 'S')
+    played_board = board_after_playing(1, 8, 9)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -340,7 +339,7 @@ def test_initial_board_insertion_8_S():
 
 
 def test_initial_board_insertion_8_N():
-    played_board = board_after_playing(1, 8, 'N')
+    played_board = board_after_playing(1, 8, 5)
     expected_board = [[0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -351,11 +350,11 @@ def test_initial_board_insertion_8_N():
 
 def test_initial_board_insertion_8_E():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 8, 'E')
+        board_after_playing(1, 8, 8)
 
 
 def test_initial_board_insertion_8_W():
-    played_board = board_after_playing(1, 8, 'W')
+    played_board = board_after_playing(1, 8, 14)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -366,11 +365,11 @@ def test_initial_board_insertion_8_W():
 
 def test_initial_board_insertion_9_S():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 9, 'S')
+        board_after_playing(1, 9, 9)
 
 
 def test_initial_board_insertion_9_N():
-    played_board = board_after_playing(1, 9, 'N')
+    played_board = board_after_playing(1, 9, 5)
     expected_board = [[0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -381,11 +380,11 @@ def test_initial_board_insertion_9_N():
 
 def test_initial_board_insertion_9_E():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 9, 'E')
+        board_after_playing(1, 9, 9)
 
 
 def test_initial_board_insertion_9_W():
-    played_board = board_after_playing(1, 9, 'W')
+    played_board = board_after_playing(1, 9, 13)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -396,11 +395,11 @@ def test_initial_board_insertion_9_W():
 
 def test_initial_board_insertion_10_S():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 10, 'S')
+        board_after_playing(1, 10, 10)
 
 
 def test_initial_board_insertion_10_N():
-    played_board = board_after_playing(1, 10, 'N')
+    played_board = board_after_playing(1, 10, 4)
     expected_board = [[0, 0, 0, 1, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -410,7 +409,7 @@ def test_initial_board_insertion_10_N():
 
 
 def test_initial_board_insertion_10_E():
-    played_board = board_after_playing(1, 10, 'E')
+    played_board = board_after_playing(1, 10, 9)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -420,7 +419,7 @@ def test_initial_board_insertion_10_E():
 
 
 def test_initial_board_insertion_10_W():
-    played_board = board_after_playing(1, 10, 'W')
+    played_board = board_after_playing(1, 10, 13)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -431,11 +430,11 @@ def test_initial_board_insertion_10_W():
 
 def test_initial_board_insertion_11_S():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 11, 'S')
+        board_after_playing(1, 11, 11)
 
 
 def test_initial_board_insertion_11_N():
-    played_board = board_after_playing(1, 11, 'N')
+    played_board = board_after_playing(1, 11, 3)
     expected_board = [[0, 0, 1, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -445,7 +444,7 @@ def test_initial_board_insertion_11_N():
 
 
 def test_initial_board_insertion_11_E():
-    played_board = board_after_playing(1, 11, 'E')
+    played_board = board_after_playing(1, 11, 9)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -455,7 +454,7 @@ def test_initial_board_insertion_11_E():
 
 
 def test_initial_board_insertion_11_W():
-    played_board = board_after_playing(1, 11, 'W')
+    played_board = board_after_playing(1, 11, 13)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -466,11 +465,11 @@ def test_initial_board_insertion_11_W():
 
 def test_initial_board_insertion_12_S():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 12, 'S')
+        board_after_playing(1, 12, 12)
 
 
 def test_initial_board_insertion_12_N():
-    played_board = board_after_playing(1, 12, 'N')
+    played_board = board_after_playing(1, 12, 2)
     expected_board = [[0, 1, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -480,7 +479,7 @@ def test_initial_board_insertion_12_N():
 
 
 def test_initial_board_insertion_12_E():
-    played_board = board_after_playing(1, 12, 'E')
+    played_board = board_after_playing(1, 12, 9)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -490,7 +489,7 @@ def test_initial_board_insertion_12_E():
 
 
 def test_initial_board_insertion_12_W():
-    played_board = board_after_playing(1, 12, 'W')
+    played_board = board_after_playing(1, 12, 13)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -501,11 +500,11 @@ def test_initial_board_insertion_12_W():
 
 def test_initial_board_insertion_13_S():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 13, 'S')
+        board_after_playing(1, 13, 13)
 
 
 def test_initial_board_insertion_13_N():
-    played_board = board_after_playing(1, 13, 'N')
+    played_board = board_after_playing(1, 13, 1)
     expected_board = [[1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -515,7 +514,7 @@ def test_initial_board_insertion_13_N():
 
 
 def test_initial_board_insertion_13_E():
-    played_board = board_after_playing(1, 13, 'E')
+    played_board = board_after_playing(1, 13, 9)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -526,11 +525,11 @@ def test_initial_board_insertion_13_E():
 
 def test_initial_board_insertion_13_W():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 13, 'W')
+        board_after_playing(1, 13, 13)
 
 
 def test_initial_board_insertion_14_S():
-    played_board = board_after_playing(1, 14, 'S')
+    played_board = board_after_playing(1, 14, 13)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -540,7 +539,7 @@ def test_initial_board_insertion_14_S():
 
 
 def test_initial_board_insertion_14_N():
-    played_board = board_after_playing(1, 14, 'N')
+    played_board = board_after_playing(1, 14, 1)
     expected_board = [[1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -550,7 +549,7 @@ def test_initial_board_insertion_14_N():
 
 
 def test_initial_board_insertion_14_E():
-    played_board = board_after_playing(1, 14, 'E')
+    played_board = board_after_playing(1, 14, 8)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -561,11 +560,11 @@ def test_initial_board_insertion_14_E():
 
 def test_initial_board_insertion_14_W():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 14, 'W')
+        board_after_playing(1, 14, 14)
 
 
 def test_initial_board_insertion_15_S():
-    played_board = board_after_playing(1, 15, 'S')
+    played_board = board_after_playing(1, 15, 13)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -575,7 +574,7 @@ def test_initial_board_insertion_15_S():
 
 
 def test_initial_board_insertion_15_N():
-    played_board = board_after_playing(1, 15, 'N')
+    played_board = board_after_playing(1, 15, 1)
     expected_board = [[1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -585,7 +584,7 @@ def test_initial_board_insertion_15_N():
 
 
 def test_initial_board_insertion_15_E():
-    played_board = board_after_playing(1, 15, 'E')
+    played_board = board_after_playing(1, 15, 7)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 1],
@@ -596,11 +595,11 @@ def test_initial_board_insertion_15_E():
 
 def test_initial_board_insertion_15_W():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 15, 'W')
+        board_after_playing(1, 15, 15)
 
 
 def test_initial_board_insertion_16_S():
-    played_board = board_after_playing(1, 16, 'S')
+    played_board = board_after_playing(1, 16, 13)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -610,7 +609,7 @@ def test_initial_board_insertion_16_S():
 
 
 def test_initial_board_insertion_16_N():
-    played_board = board_after_playing(1, 16, 'N')
+    played_board = board_after_playing(1, 16, 1)
     expected_board = [[1, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
@@ -620,7 +619,7 @@ def test_initial_board_insertion_16_N():
 
 
 def test_initial_board_insertion_16_E():
-    played_board = board_after_playing(1, 16, 'E')
+    played_board = board_after_playing(1, 16, 6)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0],
@@ -631,7 +630,7 @@ def test_initial_board_insertion_16_E():
 
 def test_initial_board_insertion_16_W():
     with pytest.raises(InvalidMove):
-        board_after_playing(1, 16, 'W')
+        board_after_playing(1, 16, 16)
 
 
 def test_initial_advanced_move():
@@ -640,7 +639,7 @@ def test_initial_advanced_move():
                      [0, 0, 0, 0, 0],
                      [0, 0, 0, -1, 1],
                      [0, 0, 0, -1, 1]]
-    played_board = board_after_playing(-1, 7, 'W', initial_board)
+    played_board = board_after_playing(-1, 7, 15, initial_board)
     expected_board = [[0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0],
                       [-1, 0, 0, 0, 0],
@@ -657,7 +656,7 @@ def test_player_wins_with_5_in_a_column():
                      [1, 0, 0, 0, 0]]
     game = QuixoGame(1)
     game.board = np.array(initial_board)
-    game.make_move(1, 'S')
+    game.make_move(1, 13)
     assert game.get_winner() == "o"
 
 
@@ -669,7 +668,7 @@ def test_player_wins_with_5_in_a_row():
                      [0, 0, 0, 0, 0]]
     game = QuixoGame(-1)
     game.board = np.array(initial_board)
-    game.make_move(6, 'W')
+    game.make_move(6, 16)
     assert game.get_winner() == "x"
 
 
@@ -681,7 +680,7 @@ def test_player_wins_with_5_in_a_diagonal():
                      [1, 0, 0, 0, 0]]
     game = QuixoGame(1)
     game.board = np.array(initial_board)
-    game.make_move(9, 'N')
+    game.make_move(9, 5)
     assert game.get_winner() == "o"
 
 
@@ -693,5 +692,5 @@ def test_it_could_end_up_in_a_draw():
                      [1, -1, 0, 0, 0]]
     game = QuixoGame(1)
     game.board = np.array(initial_board)
-    game.make_move(5, 'W')
+    game.make_move(5, 1)
     assert game.get_winner() == "Draw"

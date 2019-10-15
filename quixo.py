@@ -28,22 +28,22 @@ def map_move(move_number):
 
 def valid_reinsertion_directions(taken_move):
     directions = {
-        (0, 0): ['',  "S", "E",  ""],
-        (0, 1): ['',  "S", "E", "W"],
-        (0, 2): ['',  "S", "E", "W"],
-        (0, 3): ['',  "S", "E", "W"],
-        (0, 4): ['',  "S",  '', "W"],
-        (1, 0): ["N", "S", "E",  ''],
-        (1, 4): ["N", "S",  '', "W"],
-        (2, 0): ["N", "S", "E",  ''],
-        (2, 4): ["N", "S",  '', "W"],
-        (3, 0): ["N", "S", "E",  ''],
-        (3, 4): ["N", "S",  '', "W"],
-        (4, 0): ["N",  '', "E",  ''],
-        (4, 1): ["N",  '', "E", "W"],
-        (4, 2): ["N",  '', "E", "W"],
-        (4, 3): ["N",  '', "E", "W"],
-        (4, 4): ["N",  '',  '', "W"],
+        (0, 0): ['', "S", "E", ""],
+        (0, 1): ['', "S", "E", "W"],
+        (0, 2): ['', "S", "E", "W"],
+        (0, 3): ['', "S", "E", "W"],
+        (0, 4): ['', "S", '', "W"],
+        (1, 0): ["N", "S", "E", ''],
+        (1, 4): ["N", "S", '', "W"],
+        (2, 0): ["N", "S", "E", ''],
+        (2, 4): ["N", "S", '', "W"],
+        (3, 0): ["N", "S", "E", ''],
+        (3, 4): ["N", "S", '', "W"],
+        (4, 0): ["N", '', "E", ''],
+        (4, 1): ["N", '', "E", "W"],
+        (4, 2): ["N", '', "E", "W"],
+        (4, 3): ["N", '', "E", "W"],
+        (4, 4): ["N", '', '', "W"],
     }
     return list(filter(None, directions[taken_move]))
 
@@ -134,7 +134,7 @@ class QuixoGame(object):
                 try:
                     self._assert_valid_move(take_move, direction)
                     valid_moves.append((token, direction))
-                except:
+                except InvalidMove:
                     pass
         return valid_moves
 
@@ -168,7 +168,7 @@ class QuixoGame(object):
         # Separa la fila en dos (sin incluir la sacada) y la reinserto desde atrás o adelante
         if reinsert_from in ["W", "E"]:
             left = self.board[take_move[0]][:take_move[1]]
-            right = self.board[take_move[0]][take_move[1]+1:]
+            right = self.board[take_move[0]][take_move[1] + 1:]
             new_line = np.concatenate((left, right))
             if reinsert_from == "W":
                 new_line = np.concatenate(([self.current_player], new_line))
@@ -184,10 +184,10 @@ class QuixoGame(object):
             raise InvalidMove("No podés reinsertar la ficha por ese lugar")
 
     def check_for_winner(self):
-        return any(abs(np.sum(self.board, axis=0)) == 5) or\
-            any(abs(np.sum(self.board, axis=1)) == 5) or\
-            abs(np.sum((self.board.diagonal()))) == 5 or\
-            abs(np.sum((self.board[::-1].diagonal()))) == 5
+        return any(abs(np.sum(self.board, axis=0)) == 5) or \
+               any(abs(np.sum(self.board, axis=1)) == 5) or \
+               abs(np.sum((self.board.diagonal()))) == 5 or \
+               abs(np.sum((self.board[::-1].diagonal()))) == 5
 
     def determine_winner(self):
         winning_players = list()
@@ -195,7 +195,7 @@ class QuixoGame(object):
         win_rows = np.where(np.abs(row_sums) == 5)[0]
         if len(win_rows) > 0:
             winning_players.extend(np.sign(row_sums[win_rows]))
-        
+
         col_sums = np.sum(self.board, axis=1)
         win_cols = np.where(np.abs(col_sums) == 5)[0]
         if len(win_cols) > 0:
@@ -214,7 +214,7 @@ class QuixoGame(object):
             winner = winning_players.pop()
             winner_map = ['Draw', 'o', 'x']
             return winner_map[winner]
-    
+
     def get_winner(self):
         return self.winner
 
@@ -238,11 +238,11 @@ class QuixoGame(object):
         l5 = ' '.join(map(self.print_position, self.board[4]))
         print("        1  2  3  4  5")
         print("    ++ == == == == == ++")
-        print(f"    || { l1 } ||  ")
-        print(f" 16 || { l2 } || 6")
-        print(f" 15 || { l3 } || 7")
-        print(f" 14 || { l4 } || 8")
-        print(f" 13 || { l5 } || 9")
+        print(f"    || {l1} ||  ")
+        print(f" 16 || {l2} || 6")
+        print(f" 15 || {l3} || 7")
+        print(f" 14 || {l4} || 8")
+        print(f" 13 || {l5} || 9")
         print("    ++ == == == == == ++")
         print("          12 11 10   ")
 

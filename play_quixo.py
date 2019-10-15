@@ -9,9 +9,9 @@ if __name__ == '__main__':
         game.print_board()
         turn_name = 'o' if turn == 1 else 'x'
         row = input(f'jugador {turn_name} saca ficha: ')
-        reinsert = input(f'jugador {turn_name} mete en (N, S, E, W): ')
+        reinsert = input(f'jugador {turn_name} mete en: ')
         try:
-            game.make_move(int(row), reinsert)
+            game.make_move(int(row), int(reinsert))
         except InvalidMove as e:
             print(e.message)
             continue

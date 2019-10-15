@@ -67,6 +67,54 @@ def map_rot90_take_move(take_move):
     return moves[tuple]
 
 
+def map_reinsert(take, reinsert):
+    _map = {
+        (1, 5): "E", (1, 13): "S",
+        (2, 1): "W", (2, 5): "E", (2, 12): "S",
+        (3, 1): "W", (3, 5): "E", (3, 11): "S",
+        (4, 1): "W", (4, 5): "E", (4, 10): "S",
+        (5, 1): "W", (5, 9): "S",
+        (6, 5): "N", (6, 9): "S", (6, 16): "W",
+        (7, 5): "N", (7, 9): "S", (7, 15): "W",
+        (8, 5): "N", (8, 9): "S", (8, 14): "W",
+        (9, 5): "N", (5, 13): "W",
+        (10, 9): "E", (10, 13): "W", (10, 4): "N",
+        (11, 9): "E", (11, 13): "W", (11, 3): "N",
+        (12, 9): "E", (12, 13): "W", (12, 3): "N",
+        (13, 1): "N", (13, 9): "E",
+        (14, 1): "N", (14, 13): "S", (14, 8): "E",
+        (15, 1): "N", (15, 13): "S", (15, 7): "E",
+        (16, 1): "N", (16, 13): "S", (16, 6): "E"
+    }
+    if (take, reinsert) not in _map:
+        raise InvalidMove("No se puede hacer esa jugada")
+    return _map[(take, reinsert)]
+
+
+def map_reinsert_reverse(take, reinsert_coord):
+    _map = {
+        (1, "E"): 5, (1, "S"): 13,
+        (2, "W"): 1, (2, "E"): 5, (2, "S"): 12,
+        (3, "W"): 1, (3, "E"): 5, (3, "S"): 11,
+        (4, "W"): 1, (4, "E"): 5, (4, "S"): 10,
+        (5, "W"): 1, (5, "S"): 9,
+        (6, "N"): 5, (6, "S"): 9, (6, "W"): 16,
+        (7, "N"): 5, (7, "S"): 9, (7, "W"): 15,
+        (8, "N"): 5, (8, "S"): 9, (8, "W"): 14,
+        (9, "N"): 5, (5, "W"): 13,
+        (10, "E"): 9, (10, "W"): 13, (10, "N"): 4,
+        (11, "E"): 9, (11, "W"): 13, (11, "N"): 3,
+        (12, "E"): 9, (12, "W"): 13, (12, "N"): 3,
+        (13, "N"): 1, (13, "E"): 9,
+        (14, "N"): 1, (14, "S"): 13, (14, "E"): 8,
+        (15, "N"): 1, (15, "S"): 13, (15, "E"): 7,
+        (16, "N"): 1, (16, "S"): 13, (16, "E"): 6
+    }
+    if (take, reinsert_coord) not in _map:
+        raise InvalidMove("Esa coordenada no va")
+    return take, _map[(take, reinsert_coord)]
+
+
 class QuixoGame(object):
 
     def __init__(self, initial_player=1):
@@ -75,6 +123,7 @@ class QuixoGame(object):
         self.winner = None
 
     def make_move(self, take_move, reinsert_from):
+        reinsert_from = map_reinsert(take_move, reinsert_from);
         reinsert_from = reinsert_from.upper()
         take_move = map_move(take_move)
         self._assert_valid_move(take_move, reinsert_from)

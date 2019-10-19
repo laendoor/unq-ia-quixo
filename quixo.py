@@ -186,28 +186,28 @@ class QuixoGame(object):
         if reinsert_from not in valid_reinsertion_directions(taken_move):
             raise InvalidMove("No podés reinsertar la ficha por ese lugar")
 
-    def check_for_winner(self):
-        return any(abs(np.sum(self.board, axis=0)) == 5) or \
-               any(abs(np.sum(self.board, axis=1)) == 5) or \
-               abs(np.sum((self.board.diagonal()))) == 5 or \
-               abs(np.sum((self.board[::-1].diagonal()))) == 5
+    def check_for_winner(self, tokens_to_win=5):
+        return any(abs(np.sum(self.board, axis=0)) == tokens_to_win) or \
+               any(abs(np.sum(self.board, axis=1)) == tokens_to_win) or \
+               abs(np.sum((self.board.diagonal()))) == tokens_to_win or \
+               abs(np.sum((self.board[::-1].diagonal()))) == tokens_to_win
 
-    def determine_winner(self):
+    def determine_winner(self, tokens_to_win=5):
         winning_players = list()
         row_sums = np.sum(self.board, axis=0)
-        win_rows = np.where(np.abs(row_sums) == 5)[0]
+        win_rows = np.where(np.abs(row_sums) == tokens_to_win)[0]
         if len(win_rows) > 0:
             winning_players.extend(np.sign(row_sums[win_rows]))
 
         col_sums = np.sum(self.board, axis=1)
-        win_cols = np.where(np.abs(col_sums) == 5)[0]
+        win_cols = np.where(np.abs(col_sums) == tokens_to_win)[0]
         if len(win_cols) > 0:
             winning_players.extend(np.sign(col_sums[win_cols]))
 
         diag0 = np.sum((self.board.diagonal()))
         diag1 = np.sum((self.board[::-1].diagonal()))
         for diag in [diag0, diag1]:
-            if abs(diag) == 5:
+            if abs(diag) == tokens_to_win:
                 winning_players.append(np.sign(diag))
 
         winning_players = set(winning_players)

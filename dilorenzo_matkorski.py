@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
-from random import random, shuffle
 from copy import deepcopy
+
+from hard import Hard
 from quixo import QuixoGame
 
 MAX = 1
@@ -11,14 +12,15 @@ inf = 100000
 
 class Quixo(object):
 
-    def __init__(self):
+    def __init__(self, heuristic=Hard):
         self.i_am = None
         self.game = QuixoGame(MAX)
+        self.heuristic = heuristic
 
     def playerPlay(self):
         if self.i_am is None:
             self.i_am = MAX
-        ab = self.alphabeta(self.game, depth=4, alpha=-inf, beta=inf, player=self.i_am)
+        ab = self.alphabeta(self.game, depth=3, alpha=-inf, beta=inf, player=self.i_am)
         self.game.make_move(ab[0][0], ab[0][1])
         return ab[0]
 
@@ -31,9 +33,8 @@ class Quixo(object):
     def game_over(game):
         return game.get_winner() is not None
 
-    @staticmethod
-    def h(game):
-        return random() * 1000
+    def h(self, game):
+        return self.heuristic.value(game, self.i_am)
 
     @staticmethod
     def valid_moves(game):
@@ -51,7 +52,6 @@ class Quixo(object):
             best = -inf
             best_move = None
             valids = self.valid_moves(node)
-            # shuffle(valids)
             for move in valids:
                 next_node = deepcopy(node)
                 child = self.play(next_node, move)
@@ -66,10 +66,8 @@ class Quixo(object):
             return best_move, best
         else:
             best = inf
-            move = None
             best_move = None
             valids = self.valid_moves(node)
-            # shuffle(valids)
             for move in valids:
                 next_node = deepcopy(node)
                 child = self.play(next_node, move)

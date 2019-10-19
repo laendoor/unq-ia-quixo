@@ -1,22 +1,27 @@
 from six.moves import input
 from quixo import InvalidMove
 from quixo import QuixoGame
+from dilorenzo_matkorski import Quixo
 
 if __name__ == '__main__':
     turn = 1
-    game = QuixoGame(turn)
+    quixo = Quixo()
     while True:
-        game.print_board()
+        quixo.game.print_board()
         turn_name = 'o' if turn == 1 else 'x'
-        row = input(f'jugador {turn_name} saca ficha: ')
-        reinsert = input(f'jugador {turn_name} mete en: ')
-        try:
-            game.make_move(int(row), int(reinsert))
-        except InvalidMove as e:
-            print(e.message)
-            continue
-        if game.get_winner():
-            game.print_board()
-            print(f'Ganó {game.get_winner()}')
+        if turn == 1:
+            row = input(f'Humano {turn_name} saca ficha: ')
+            reinsert = input(f'Humano {turn_name} mete en: ')
+            try:
+                quixo.opponentPlay((int(row), int(reinsert)))
+            except InvalidMove as e:
+                print(e.message)
+                continue
+        else:
+            quixo.playerPlay()
+
+        if quixo.game.get_winner():
+            quixo.game.print_board()
+            print(f'Ganó {quixo.game.get_winner()}')
             break
         turn *= -1

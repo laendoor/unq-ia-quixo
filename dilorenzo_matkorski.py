@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from random import choice
+from random import random
 from copy import deepcopy
 from quixo import QuixoGame
 
@@ -18,7 +18,9 @@ class Quixo(object):
     def playerPlay(self):
         if self.i_am is None:
             self.i_am = MAX
-        return self.alphabeta(self.game, depth=2, alpha=10, beta=10, player=self.i_am)
+        ab = self.alphabeta(self.game, depth=2, alpha=10, beta=10, player=self.i_am)
+        self.game.make_move(ab[0][0], ab[0][1])
+        return ab[0]
 
     def opponentPlay(self, move):
         if self.i_am is None:
@@ -31,13 +33,7 @@ class Quixo(object):
 
     @staticmethod
     def h(game):
-        best_move = -inf
-        return choice(game.valid_moves())
-        # for move in game.valid_moves():
-        #     this_move = game.get_value_of(move)
-        #     if this_move > best_move:
-        #         best_move = this_move
-        # return best_move
+        return random()
 
     @staticmethod
     def valid_moves(game):
@@ -50,24 +46,28 @@ class Quixo(object):
 
     def alphabeta(self, node, depth, alpha, beta, player):
         if depth == 0 or self.game_over(node):
-            return self.h(node)
+            return None, self.h(node)
         if player == MAX:
-            value = -inf
+            best = -inf
+            move = None
             for move in self.valid_moves(node):
                 next_node = deepcopy(node)
                 child = self.play(next_node, move)
-                value = max(value, self.alphabeta(child, depth - 1, alpha, beta, -player))
-                alpha = max(alpha, value)
+                next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
+                best = max(best, next_score[1])
+                alpha = max(alpha, best)
                 if alpha >= beta:
                     break  # beta cut - off
-            return value
+            return move, best
         else:
-            value = inf
+            best = inf
+            move = None
             for move in self.valid_moves(node):
                 next_node = deepcopy(node)
                 child = self.play(next_node, move)
-                value = min(value, self.alphabeta(child, depth - 1, alpha, beta, -player))
-                beta = min(beta, value)
+                next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
+                best = min(best, next_score[1])
+                beta = min(beta, best)
                 if alpha >= beta:
                     break  # alpha cut - off
-            return value
+            return move, best

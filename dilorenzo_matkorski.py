@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-from random import random
+from random import random, shuffle
 from copy import deepcopy
 from quixo import QuixoGame
 
 MAX = 1
 MIN = -1
-inf = 1000
+inf = 100000
 
 
 class Quixo(object):
@@ -18,7 +18,7 @@ class Quixo(object):
     def playerPlay(self):
         if self.i_am is None:
             self.i_am = MAX
-        ab = self.alphabeta(self.game, depth=2, alpha=10, beta=10, player=self.i_am)
+        ab = self.alphabeta(self.game, depth=4, alpha=-inf, beta=inf, player=self.i_am)
         self.game.make_move(ab[0][0], ab[0][1])
         return ab[0]
 
@@ -33,7 +33,7 @@ class Quixo(object):
 
     @staticmethod
     def h(game):
-        return random()
+        return random() * 1000
 
     @staticmethod
     def valid_moves(game):
@@ -49,25 +49,36 @@ class Quixo(object):
             return None, self.h(node)
         if player == MAX:
             best = -inf
-            move = None
-            for move in self.valid_moves(node):
+            best_move = None
+            valids = self.valid_moves(node)
+            # shuffle(valids)
+            for move in valids:
                 next_node = deepcopy(node)
                 child = self.play(next_node, move)
-                next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
-                best = max(best, next_score[1])
+                _, next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
+
+                if next_score > best:
+                    best_move = move
+                best = max(best, next_score)
                 alpha = max(alpha, best)
                 if alpha >= beta:
                     break  # beta cut - off
-            return move, best
+            return best_move, best
         else:
             best = inf
             move = None
-            for move in self.valid_moves(node):
+            best_move = None
+            valids = self.valid_moves(node)
+            # shuffle(valids)
+            for move in valids:
                 next_node = deepcopy(node)
                 child = self.play(next_node, move)
-                next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
-                best = min(best, next_score[1])
+                _, next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
+
+                if next_score < best:
+                    best_move = move
+                best = min(best, next_score)
                 beta = min(beta, best)
                 if alpha >= beta:
                     break  # alpha cut - off
-            return move, best
+            return best_move, best

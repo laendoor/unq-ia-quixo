@@ -294,7 +294,22 @@ class Hard(object):
         # Devuelvo score minimo si es un tablero donde puedo perder en el próximo turno
         winner = node.check_for_winner(4)
         if winner and node.determine_winner(4) == players[i_am * -1]:
-            score -= 1000
+            score -= 500
+
+        # Devuelvo score máximo si es un tablero donde puedo ganar en el próximo turno
+        winner = node.check_for_winner(4)
+        if winner and node.determine_winner(4) == players[i_am]:
+            score += 500
+
+        # Devuelvo score máximo si es un tablero donde puedo ganar en el próximo turno
+        winner = node.check_for_winner(3)
+        if winner and node.determine_winner(3) == players[i_am]:
+            score += 300
+
+        # Devuelvo score máximo si es un tablero donde puedo ganar en el próximo turno
+        winner = node.check_for_winner(3)
+        if winner and node.determine_winner(3) == players[i_am * -1]:
+            score -= 300
 
         return score
 

@@ -118,6 +118,7 @@ class QuixoGame(object):
         self.board = np.zeros((5, 5), dtype=np.int)
         self.current_player = initial_player
         self.winner = None
+        self.won = None
 
     def valid_moves(self):
         valid_moves = []
@@ -212,6 +213,7 @@ class QuixoGame(object):
             return 'Draw'
         else:
             winner = winning_players.pop()
+            self.won = winner
             winner_map = ['Draw', 'o', 'x']
             return winner_map[winner]
 
@@ -321,12 +323,24 @@ class Quixo(object):
         self.game = QuixoGame(MAX)
         self.heuristic = heuristic
 
+    def play(self, time_sec):
+        move = self.playerPlay()
+        return move
+
     def playerPlay(self):
         if self.i_am is None:
             self.i_am = MAX
         ab = self.alphabeta(self.game, depth=3, alpha=-inf, beta=inf, player=self.i_am)
         self.game.make_move(ab[0][0], ab[0][1])
         return ab[0]
+
+    def update(self, move):
+        if self.game.check_for_winner():
+            self.game.determine_winner()
+        if self.game.won == self.i_am:
+            raise TypeError("Yo ya gané!")
+        self.opponentPlay(move)
+        return True
 
     def opponentPlay(self, move):
         if self.i_am is None:

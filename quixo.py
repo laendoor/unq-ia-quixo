@@ -213,7 +213,6 @@ class QuixoGame(object):
             return 'Draw'
         else:
             winner = winning_players.pop()
-            self.won = winner
             winner_map = ['Draw', 'o', 'x']
             return winner_map[winner]
 
@@ -335,9 +334,11 @@ class Quixo(object):
         return ab[0]
 
     def update(self, move):
+        winner = None
         if self.game.check_for_winner():
-            self.game.determine_winner()
-        if self.game.won == self.i_am:
+            winner = self.game.determine_winner()
+        # players = {-1: 'x', 1: 'o'}
+        if (winner == 'o' and self.i_am == 1) or (winner == 'x' and self.i_am == -1):
             raise TypeError("Yo ya gané!")
         self.opponentPlay(move)
         return True

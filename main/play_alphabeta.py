@@ -1,4 +1,4 @@
-from dilorenzo_matkorski import Quixo
+from quixo import Quixo
 from quixo import QuixoGame
 
 if __name__ == '__main__':

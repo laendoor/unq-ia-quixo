@@ -1,8 +1,8 @@
-from dilorenzo_matkorski import Quixo
-from easy import Easy
+from quixo import Easy, Quixo
 
 if __name__ == '__main__':
     while True:
+        plays = 1
         hardPlayer = Quixo()  # 1 | o
         easyPlayer = Quixo(Easy)  # -1 | x
         res_dic = {
@@ -12,7 +12,7 @@ if __name__ == '__main__':
         }
         turn = 1
         while True:
-            # hard.game.print_board()
+            # hardPlayer.game.print_board()
 
             if turn == 1:
 
@@ -23,9 +23,9 @@ if __name__ == '__main__':
                 hardPlayer.opponentPlay(move)
 
             turn = turn * -1
-
+            plays +=1
             if hardPlayer.game.get_winner():
-                # hard.game.print_board()
+                # hardPlayer.game.print_board()
                 winner = hardPlayer.game.get_winner()
-                print(f'Ganador: {winner} ({res_dic[winner]})')
+                print(f'Ganador: {winner} ({res_dic[winner]}) en {plays} jugadas')
                 break

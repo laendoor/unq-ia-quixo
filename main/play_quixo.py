@@ -1,7 +1,6 @@
 from six.moves import input
 from quixo import InvalidMove
-from quixo import QuixoGame
-from dilorenzo_matkorski import Quixo
+from quixo import Quixo
 
 if __name__ == '__main__':
     turn = 1

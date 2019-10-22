@@ -1,3 +1,8 @@
+#!/usr/bin/python
+
+from copy import deepcopy
+import numpy
+from random import random
 import numpy as np
 
 
@@ -6,13 +11,6 @@ class InvalidMove(RuntimeError):
         self.message = str(message)
 
 
-#       0  1  2  3  4
-#   ++ == == == == ==
-# 0 ||  1  2  3  4  5
-# 1 || 16 __ __ __  6
-# 2 || 15 __ __ __  7
-# 3 || 14 __ __ __  8
-# 4 || 13 12 11 10  9
 def map_move(move_number):
     moves = {
         1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (0, 3), 5: (0, 4),
@@ -48,7 +46,6 @@ def valid_reinsertion_directions(taken_move):
     return list(filter(None, directions[taken_move]))
 
 
-# Rotate coordinates 90° anticlockwise
 def reinsert_from_rot90(reinsert_from):
     map_directions = {"N": "W", "W": "S", "S": "E", "E": "N"}
     return map_directions[reinsert_from]
@@ -257,3 +254,119 @@ class QuixoGame(object):
             return ' x'
         else:
             return '  '
+
+
+MAX = 1
+MIN = -1
+inf = 100000
+
+
+class Easy(object):
+
+    @staticmethod
+    def value(node, i_am):
+        return random() * 1000
+
+
+class Hard(object):
+
+    @staticmethod
+    def value(node, i_am):
+        players = {-1: 'x', 1: 'o'}
+
+        score = 0
+
+        winner = node.check_for_winner()
+
+        # Devuelvo score minimo si es un tablero donde pierdo
+        if winner and node.determine_winner() == players[i_am * -1]:
+            score -= 1000
+
+        # Devuelvo score máximo si es un tablero donde gano
+        if winner and node.determine_winner() == players[i_am]:
+            score += 1000
+
+        # Sumo 1 de score por cada ficha
+        tokens = node.board.flatten()
+        unique, counts = numpy.unique(tokens, return_counts=True)
+        score += (dict(zip(unique, counts)))[i_am]
+
+        # Devuelvo score minimo si es un tablero donde puedo perder en el próximo turno
+        winner = node.check_for_winner(4)
+        if winner and node.determine_winner(4) == players[i_am * -1]:
+            score -= 1000
+
+        return score
+
+
+class Quixo(object):
+
+    def __init__(self, heuristic=Hard):
+        self.i_am = None
+        self.game = QuixoGame(MAX)
+        self.heuristic = heuristic
+
+    def playerPlay(self):
+        if self.i_am is None:
+            self.i_am = MAX
+        ab = self.alphabeta(self.game, depth=3, alpha=-inf, beta=inf, player=self.i_am)
+        self.game.make_move(ab[0][0], ab[0][1])
+        return ab[0]
+
+    def opponentPlay(self, move):
+        if self.i_am is None:
+            self.i_am = MIN
+        self.game.make_move(move[0], move[1])
+
+    @staticmethod
+    def game_over(game):
+        return game.get_winner() is not None
+
+    def h(self, game):
+        return self.heuristic.value(game, self.i_am)
+
+    @staticmethod
+    def valid_moves(game):
+        return game.valid_moves()
+
+    @staticmethod
+    def play(game, move):
+        game.make_move(move[0], move[1])
+        return game
+
+    def alphabeta(self, node, depth, alpha, beta, player):
+        if depth == 0 or self.game_over(node):
+            return None, self.h(node)
+        if player == MAX:
+            best = -inf
+            best_move = None
+            valids = self.valid_moves(node)
+            # shuffle(valids)
+            for move in valids:
+                next_node = deepcopy(node)
+                child = self.play(next_node, move)
+                _, next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
+                if next_score > best:
+                    best_move = move
+                best = max(best, next_score)
+                alpha = max(alpha, best)
+                if alpha >= beta:
+                    break  # beta cut - off
+            return best_move, best
+        else:
+            best = inf
+            best_move = None
+            valids = self.valid_moves(node)
+            # shuffle(valids)
+            for move in valids:
+                next_node = deepcopy(node)
+                child = self.play(next_node, move)
+                _, next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
+
+                if next_score < best:
+                    best_move = move
+                best = min(best, next_score)
+                beta = min(beta, best)
+                if alpha >= beta:
+                    break  # alpha cut - off
+            return best_move, best

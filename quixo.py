@@ -345,7 +345,7 @@ class Quixo(object):
         return game.valid_moves()
 
     @staticmethod
-    def play(game, move):
+    def playStatic(game, move):
         game.make_move(move[0], move[1])
         return game
 
@@ -359,7 +359,7 @@ class Quixo(object):
             # shuffle(valids)
             for move in valids:
                 next_node = deepcopy(node)
-                child = self.play(next_node, move)
+                child = self.playStatic(next_node, move)
                 _, next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
                 if next_score > best:
                     best_move = move
@@ -375,7 +375,7 @@ class Quixo(object):
             # shuffle(valids)
             for move in valids:
                 next_node = deepcopy(node)
-                child = self.play(next_node, move)
+                child = self.playStatic(next_node, move)
                 _, next_score = self.alphabeta(child, depth - 1, alpha, beta, -player)
 
                 if next_score < best:

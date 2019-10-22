@@ -25,7 +25,7 @@ if __name__ == '__main__':
             turn = turn * -1
             plays +=1
             if hardPlayer.game.get_winner():
-                # hardPlayer.game.print_board()
+                hardPlayer.game.print_board()
                 winner = hardPlayer.game.get_winner()
                 print(f'Ganador: {winner} ({res_dic[winner]}) en {plays} jugadas')
                 break
